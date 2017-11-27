@@ -1,0 +1,3 @@
+# 制定创建索引的字段
+{{ object.good_name }}
+{{ object.good_desc }}

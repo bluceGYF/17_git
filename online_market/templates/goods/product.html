@@ -1,0 +1,52 @@
+{% extends 'common/base.html' %}
+{% load staticfiles %}
+
+
+
+{% block body %}
+  <div class="positions">
+   当前位置：<a href="index.html">首页</a> &gt; <a href="#" class="posCur">促销商品</a>
+  </div><!--positions/-->
+  <div class="cont">
+  <div class="jilu">
+    总计 <span>{{ goods.count }}</span> 个记录
+   </div><!--jilu/-->
+   <div class="contLeft">
+    <ul class="leftPorNav">
+        {% for cag in request.cags %}
+     <li><a href="{% url 'goods:product' 1 cag.id 1 %}">{{ cag.cag_name }}</a>
+      <div class="chilInPorNav">
+          {% for son_cag in cag.goods_son_category_set.all %}
+       <a href="{% url 'goods:product' 2 son_cag.id 1 %}">{{ son_cag.cag_name }}</a>
+            {% endfor %}
+      </div><!--chilLeftNav/-->
+     </li>
+     {% endfor %}
+    </ul><!--InPorNav/-->
+   </div><!--contLeft/-->
+   <div class="contRight">
+    <div class="frProList">
+        {% for good in current_page %}
+      <dl>
+      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id }}"><img src="{% static good.good_image %}" width="132" height="129" /></a></dt>
+      <dd>{{ good.good_name }}</dd>
+      <dd class="cheng">￥{{ good.good_price }}/{{ good.good_unit }} <span>￥{{ good.good_price }}</span></dd>
+     </dl>
+        {% endfor %}
+      <div class="clears"></div>
+     </div><!--frProList-->
+        <div class="pagenation">
+            {% if current_page.has_previous %}
+            <a href="{% url 'goods:product' a cag_id current_page.previous_page_number %}">上一页</a>
+            {% endif %}
+            {% for index in paginator.page_range %}
+            <a href="{% url 'goods:product' a cag_id index %}" {% if page_id == index %}class="active"{% endif %}>{{ index }}</a>
+            {% endfor %}
+            {% if current_page.has_next %}
+            <a href="{% url 'goods:product' a cag_id current_page.next_page_number %}">下一页</a>
+            {% endif %}
+        </div>
+   </div><!--contRight/-->
+   <div class="clears"></div>
+  </div><!--cont/-->
+  {% endblock body %}

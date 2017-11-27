@@ -1,0 +1,99 @@
+{% extends 'common/base.html' %}
+{% load staticfiles %}
+{% block top_js %}
+<script type="text/javascript">
+ $(function(){
+	 $(".vipNav dd:first").show();
+	 })
+</script>
+{% endblock top_js %}
+
+
+
+
+
+{% block body %}
+  <div class="positions">
+   当前位置：<a href="../goods/index.html">首页</a> &gt; <a href="vip.html">会员中心</a>
+    &gt; <a href="#" class="posCur">我的订单</a>
+  </div><!--positions/-->
+  <div class="cont">
+   <div class="contLeft" id="contLeft">
+    <h3 class="leftTitle">会员中心</h3>
+    <dl class="helpNav vipNav">
+     <dt>我的主页</dt>
+      <dd>
+       <a href="vip.html">个人中心</a>
+       <a href="uorder.html" class="vipCur">我的订单</a>
+      </dd>
+     <dt>账户设置</dt>
+      <dd>
+       <a href="vipMy.html">个人信息</a>
+       <a href="repwd.html">密码修改</a>
+       <a href="vip_adress.html">收货地址</a>
+      </dd>
+      <dt>客户服务</dt>
+       <dd>
+        <a href="use_detail.html">网站使用条款</a>
+        <a href="state.html">网站免责声明</a>
+        <a href="message.html">在线留言</a>
+       </dd>
+      
+      
+    </dl><!--helpNav/-->
+   </div><!--contLeft/-->
+   <div class="contRight">
+    <h1 class="vipName"><span>用户名：</span>纯小绿先森</h1>
+    <h2 class="oredrName">
+    我的订单 <span style="margin-left:40px;">待发货 <span class="red">10</span> </span>
+    <span>待收货 <span class="red">15</span></span>
+    </h2>
+    <table class="vipOrder">
+     <tr>
+      <td><a href="../goods/proinfo.html"><img src="{% static 'images/rdPro5.jpg' %}" width="60" height="55"></a></td>
+      <td>张益达</td>
+      <td>￥16.9<br />支付宝支付</td>
+      <td>2014年6月23日11:32:17</td>
+      <td><a href="../cart/success.html"><strong>等待付款</strong></a></td>
+      <td><a href="../order/order_details.html">查看</a></td>
+     </tr>
+     <tr>
+      <td><a href="../goods/proinfo.html"><img src="{% static 'images/rdPro5.jpg' %}" width="60" height="55"></a></td>
+      <td>张益达</td>
+      <td>￥16.9<br />支付宝支付</td>
+      <td>2014年6月23日11:32:17</td>
+      <td><a href="../cart/success.html"><strong>等待付款</strong></a></td>
+      <td><a href="../order/order_details.html">查看</a></td>
+     </tr>
+     <tr>
+      <td><a href="../goods/proinfo.html"><img src="{% static 'images/rdPro5.jpg' %}" width="60" height="55"></a></td>
+      <td>张益达</td>
+      <td>￥16.9<br />支付宝支付</td>
+      <td>2014年6月23日11:32:17</td>
+      <td><a href="../cart/success.html"><strong>等待付款</strong></a></td>
+      <td><a href="../order/order_details.html">查看</a></td>
+     </tr>
+     <tr>
+      <td><a href="../goods/proinfo.html"><img src="{% static 'images/rdPro5.jpg' %}" width="60" height="55"></a></td>
+      <td>张益达</td>
+      <td>￥16.9<br />支付宝支付</td>
+      <td>2014年6月23日11:32:17</td>
+      <td><a href="../cart/success.html"><strong>等待付款</strong></a></td>
+      <td><a href="../order/order_details.html">查看</a></td>
+     </tr>
+     <tr>
+      <td><a href="../goods/proinfo.html"><img src="{% static 'images/rdPro5.jpg' %}" width="60" height="55"></a></td>
+      <td>张益达</td>
+      <td>￥16.9<br />支付宝支付</td>
+      <td>2014年6月23日11:32:17</td>
+      <td><a href="../cart/success.html"><strong>等待付款</strong></a></td>
+      <td><a href="../order/order_details.html">查看</a></td>
+     </tr>
+    </table><!--vipOrder/-->
+    <br />
+    <div class="scott"><span class="disabled"> < </span><span class="current">1</span><a href="#?page=2">2</a><a href="#?page=3">3</a><a href="#?page=4">4</a><a href="#?page=5">5</a><a href="#?page=6">6</a><a href="#?page=7">7</a>...<a href="#?page=199">199</a><a href="#?page=200">200</a><a href="#?page=2"> > </a></div>
+    <br />
+   </div><!--contRight/-->
+   <div class="clears"></div>
+  </div><!--cont/-->
+  {% endblock body %}

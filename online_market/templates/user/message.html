@@ -1,0 +1,66 @@
+{% extends 'common/base.html' %}
+
+{% block top_js %}
+<script type="text/javascript">
+ $(function(){
+	 $(".vipNav dd:eq(2)").show();
+	 })
+</script>
+{% endblock top_js %}
+
+
+{% block body %}
+  <div class="positions">
+   当前位置：<a href="../goods/index.html">首页</a> &gt; <a href="vip.html">会员中心</a>
+    &gt; <a href="#" class="posCur">我的订单</a>
+  </div><!--positions/-->
+  <div class="cont">
+   <div class="contLeft" id="contLeft">
+    <h3 class="leftTitle">会员中心</h3>
+    <dl class="helpNav vipNav">
+     <dt>我的主页</dt>
+      <dd>
+       <a href="vip.html">个人中心</a>
+       <a href="uorder.html">我的订单</a>
+      </dd>
+     <dt>账户设置</dt>
+      <dd>
+       <a href="vipMy.html">个人信息</a>
+       <a href="repwd.html">密码修改</a>
+       <a href="vip_adress.html">收货地址</a>
+      </dd>
+      <dt>客户服务</dt>
+       <dd>
+        <a href="use_detail.html">网站使用条款</a>
+        <a href="state.html">网站免责声明</a>
+        <a href="message.html" class="vipCur">在线留言</a>
+       </dd>
+    </dl><!--helpNav/-->
+   </div><!--contLeft/-->
+   <div class="contRight">
+   <h2 class="oredrName">
+    在线留言
+   </h2>
+   <form action="#" method="get" class="message">
+    <div class="addList">
+     <label>用户名:</label>
+     <input type="text" />
+    </div><!--addList-->
+    <div class="addList">
+     <label>联系方式:</label>
+     <input type="text" />
+    </div><!--addList-->
+    <div class="addList" style="height:105px;">
+     <label>留言内容:</label>
+     <textarea style="width:220px;height:102px;">
+     
+     </textarea>
+    </div><!--addList-->
+    <div class="addList2">
+     <input type="submit" value="提交" />
+    </div><!--addList2/-->
+   </form><!--message/-->
+   </div><!--contRight/-->
+   <div class="clears"></div>
+  </div><!--cont/-->
+{% endblock body %}

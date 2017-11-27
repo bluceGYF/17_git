@@ -1,0 +1,138 @@
+{% extends 'common/base.html' %}
+{% load staticfiles %}
+{% block top_js %}
+<script type="text/javascript">
+ $(function(){
+	 $(".vipNav dd:first").show();
+	 });
+$(function(){
+    $('#c1').change(function(){
+        $.get('{% url 'user:city_change' %}', {'baba_code':$('#c1').val()}, function(data){
+            cities = data.ret;
+            $('#c2').empty();
+            $('#c2').append('<option value="-1">请选择市</option>');
+            for(var i=0; i<cities.length; i++){
+{#                alert(cities[i]['name'])#}
+                $('#c2').append('<option value="'+ cities[i]['code'] + '">'+ cities[i]['name'] +'</option>');
+
+            }
+        });
+    });
+    $('#c2').change(function(){
+        $.get('{% url 'user:city_change' %}', {'baba_code':$('#c2').val()}, function(data){
+            cities = data.ret;
+            $('#c3').empty();
+            $('#c3').append('<option value="-1">请选择地区</option>');
+            for(var i=0; i<cities.length; i++){
+                $('#c3').append('<option value='+ cities[i]['code'] + '>'+ cities[i]['name'] +'</option>');
+
+            }
+        });
+    });
+});
+</script>
+{% endblock top_js %}
+{# ------------主体部分----------- #}
+{% block body %}
+    {% if mess.edit_addr == 'true' %}
+    <script>alert('修改成功！')</script>
+    {% elif mess.edit_addr == 'false' %}
+    <script>alert('修改失败！')</script>
+    {% endif %}
+  <div class="positions">
+   当前位置：<a href="../goods/index.html">首页</a> &gt; <a href="vip.html">会员中心</a>
+    &gt; <a href="#" class="posCur">我的订单</a>
+  </div><!--positions/-->
+  <div class="cont">
+   <div class="contLeft" id="contLeft">
+    <h3 class="leftTitle">会员中心</h3>
+    <dl class="helpNav vipNav">
+     <dt>我的主页</dt>
+      <dd>
+       <a href="vip.html" class="vipCur">个人中心</a>
+       <a href="uorder.html">我的订单</a>
+      </dd>
+     <dt>账户设置</dt>
+      <dd>
+       <a href="vipMy.html">个人信息</a>
+       <a href="repwd.html">密码修改</a>
+       <a href="vip_adress.html">收货地址</a>
+      </dd>
+      <dt>客户服务</dt>
+       <dd>
+        <a href="use_detail.html">网站使用条款</a>
+        <a href="state.html">网站免责声明</a>
+        <a href="message.html">在线留言</a>
+       </dd>
+      
+      
+    </dl><!--helpNav/-->
+   </div><!--contLeft/-->
+   <div class="contRight">
+    <h1 class="vipName"><span>用户名：</span>{{ user.user_name }}  <strong class="vipUp">[点击修改/补充个人信息]</strong></h1>
+    <table class="vipMy">
+     <tr>
+      <th>用户名</th>
+      <th>邮编</th>
+      <th>真实姓名</th>
+      <th>手机号码</th>
+      <th>身份证号</th>
+      <th>详细地址</th>
+     </tr>
+     <tr>
+      <td>{{ user.user_name }}</td>
+      <td>{{ user.user_code }}</td>
+      <td>{{ user.user_true_name }}</td>
+      <td>{{ user.user_cellphone }}</td>
+      <td>{{ user.user_card_id }}</td>
+      <td>{{ user.user_addr }}</td>
+     </tr>
+    </table><!--vipMy/-->
+    <div class="address">
+        <form action="{% url 'user:user_edit_addr' %}" method="post">
+            {% csrf_token %}
+    <div class="addList">
+     <label><span class="red">* </span>真实姓名:</label>
+     <input type="text" name="true_name"/>
+    </div><!--addList-->
+    <div class="addList">
+     <label><span class="red">* </span>详细地址:</label>
+     <input type="text" name="user_detail_addr"/>
+    </div><!--addList-->
+    <div class="addList">
+     <label><span class="red">* </span>邮政编码:</label>
+     <input type="text" name="code"/>
+    </div><!--addList-->
+    <div class="addList">
+     <label><span class="red">* </span>证件号码:</label>
+     <input type="text" name="id_card"/>
+    </div><!--addList-->
+    <div class="addList">
+     <label><span class="red">* </span>手机号码:</label>
+     <input type="text" name="cell_phone"/> 或者固定电话 <input type="text" name="tele" value="0571-2822233"/>
+    </div><!--addList--> 
+    <div class="addList">
+     <label><span class="red">* </span>选择地区:</label>
+     <select id="c1" name="c1">
+      <option value="-1">请选择省</option>
+         {% for city in cities %}
+             <option value="{{ city.city_code }}">{{ city.city_name }}</option>
+         {% endfor %}
+     </select>
+     <select id="c2" name="c2">
+      <option value="-1">请选择市</option>
+     </select>
+     <select id="c3" name="c3">
+      <option value="-1">请选择地区</option>
+     </select>
+    </div><!--addList-->
+
+    <div class="addList2">
+     <input type="submit" src="{% static 'images/baocun.png' %}" width="79" height="30" />
+    </div><!--addList2/-->
+        </form>
+   </div><!--address/-->
+   </div><!--contRight/-->
+   <div class="clears"></div>
+  </div><!--cont/-->
+{% endblock body %}

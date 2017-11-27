@@ -1,0 +1,175 @@
+{% extends 'common/base.html' %}
+{% load staticfiles %}
+{% block top_js %}
+    <scirpt src="{% static 'js/jquery-1.12.4.min.js' %}"></scirpt>
+    <script>
+        $(function(){
+            $('.tijiao').click(function(){
+                goods_ids = $(this).attr('goods_ids');
+                pay = $('input[name="pay"]:checked').val();
+                csrf_val = $('input[name="csrfmiddlewaretoken"]').val();
+                $.post('{% url 'cart:order_handle' %}', {'goods_ids':goods_ids, 'pay': pay, 'csrfmiddlewaretoken': csrf_val}, function(data){
+                    if(data.ret != 0){
+                        alert("提交成功！");
+                        window.location.href = "http://localhost:8000/cart/success/";
+
+
+
+                    }else{
+                        alert("提交有误！");
+                        window.location.href = "http://localhost:8000/cart/";
+                    }
+                })
+            });
+
+        });
+    </script>
+{% endblock %}
+
+
+
+{% block body %}
+  <div class="positions">
+   当前位置：<a href="../goods/index.html">首页</a> &gt; <a href="#" class="posCur">填写核对订单</a>
+  </div><!--positions/-->
+  <div class="cont">
+   <div class="carImg"><img src="{% static 'images/car2.jpg' %}" width="961" height="27" /></div>
+   <h4 class="orderTitle">收货地址</h4>
+   <table class="ord">
+    <tr>
+     <td width="30%">
+      <input type="radio" checked/> {{ cart.cart_user.user_name }}
+     </td>
+     <td width="50%">
+      {{ cart.cart_user.user_addr }}	,{{ cart.cart_user.user_code }},{{ cart.cart_user.user_cellphone }}
+     </td>
+     <td>
+         <span class="green upd"><a href="{% url 'user:vip' %}">[修改]</a></span>
+     </td>
+    </tr>
+   </table><!--ord/-->
+{#   <div class="address">#}
+{#    <div class="addList">#}
+{#     <label><span class="red">* </span>选择地区:</label>#}
+{#     <select>#}
+{#      <option>请选择省</option>#}
+{#     </select>#}
+{#     <select>#}
+{#      <option>请选择市</option>#}
+{#     </select>#}
+{#     <select>#}
+{#      <option>请选择地区</option>#}
+{#     </select>#}
+{#    </div><!--addList-->#}
+{#    <div class="addList">#}
+{#     <label><span class="red">* </span>详细地址:</label>#}
+{#     <input type="text" />#}
+{#    </div><!--addList-->#}
+{#    <div class="addList">#}
+{#     <label><span class="red">* </span>邮政编码:</label>#}
+{#     <input type="text" />#}
+{#    </div><!--addList-->#}
+{#    <div class="addList">#}
+{#     <label><span class="red">* </span>收件人:</label>#}
+{#     <input type="text" />#}
+{#    </div><!--addList-->#}
+{#    <div class="addList">#}
+{#     <label><span class="red">* </span>手机号码:</label>#}
+{#     <input type="text" /> 或者固定电话 <input type="text" />#}
+{#    </div><!--addList--> #}
+{#    <div class="addList2">#}
+{#     <input type="image" src="images/queren.jpg" width="100" height="32" />#}
+{#    </div><!--addList2/-->#}
+{#   </div><!--address/-->#}
+   <h4 class="orderTitle">支付方式</h4>
+   <ul class="zhiList">
+   <li>网银支付-借记卡</li>
+   <li>网银支付-信用卡</li>
+   <li>财付通-余额支付</li>
+   <li>支付宝-余额支付</li>
+   <div class="clears"></div>
+  </ul><!--zhiList/-->
+  <div class="zhifufangshi">
+   <ul class="yinhang">
+    <li><input type="radio" name="pay" value="1" checked/><img src="{% static 'images/yin1.gif' %}" /></li>
+
+    <div class="clears"></div>
+   </ul>
+  </div><!--zhzhifufangshii/-->
+  <div class="zhifufangshi">
+   <ul class="yinhang">
+    <li><input type="radio" name="pay" value="2"/><img src="{% static 'images/yin7.gif' %}" /></li>
+
+    <div class="clears"></div>
+   </ul>
+  </div><!--zhzhifufangshii/-->
+  <div class="zhifufangshi">
+   <ul class="yinhang">
+    <li><input type="radio" name="pay" value="3"/><img src="{% static 'images/caifutong.jpg' %}" /></li>
+    <div class="clear"></div>
+   </ul>
+  </div><!--zhzhifufangshii/-->
+  <div class="zhifufangshi">
+   <ul class="yinhang">
+    <li><input type="radio" name="pay" value="4"/><img src="{% static 'images/zhifubao.jpg' %}" /></li>
+    <div class="clear"></div>
+   </ul>
+  </div><!--zhzhifufangshii/-->
+  <h4 class="orderTitle">购物清单</h4>
+  <table class="orderList">
+    <tr>
+     <th width="20"></th>
+     <th width="430">商品</th>
+     <th width="135">单价</th>
+     <th width="135">数量</th>
+     <th width="135">总金额</th>
+        {% csrf_token %}
+    </tr>
+  {% for cart in carts %}
+    <tr class="order2_list">
+
+     <td>
+      <dl>
+       <dt><a href="{% url 'goods:proinfo' %}"><img src="{% static cart.cart_goods.good_image %}" width="85" height="85" /></a></dt>
+       <dd>{{ cart.cart_goods.good_name }}<br /><span class="red">{% if cart.cart_goods.good_have == True %}有货{% else %}空{% endif %}：</span>从上海出发</dd>
+       <div class="clears"></div>
+      </dl>
+     </td>
+     <td><strong class="red">{{ cart.cart_goods.good_name }}</strong></td>
+    <td><strong class="red"></strong>{{ cart.cart_goods.good_price }}元</td>
+     <td>
+     <div class="jia_jian">
+
+      <input type="text" class="shuliang" readonly="readonly" value="{{ cart.cart_amount }}" />
+
+     </div>
+     </td>
+
+     <td><strong class="red">{{ cart.signal_money }}元</strong></td>
+
+    </tr>
+    {% endfor %}
+   </table><!--orderList/-->
+   <table class="zongjia" align="right">
+    <tr>
+     <td width="120" align="left">商品总价：</td>
+     <td width="60"><strong class="red">{{ carts.total_money }}元</strong></td>
+    </tr>
+    <tr>
+     <td width="120" align="left">运费总额：</td>
+     <td><strong class="red">10元</strong></td>
+    </tr>
+
+    <tr>
+     <td width="120" align="left">合计：</td>
+     <td><strong class="red">{{ carts.total_money | add:10 }}元</strong></td>
+    </tr>
+    <tr>
+     <td colspan="2" style="height:50px;">
+      <a class="tijiao" goods_ids="{{ goods_id_list }}" href="javascript:;"><img src="{% static 'images/tijao.png' %}" width="142" height="32" /></a>
+     </td>
+    </tr>
+   </table><!--zongjia/-->
+   <div class="clears"></div>
+  </div><!--cont/-->
+  {% endblock body %}

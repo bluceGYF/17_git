@@ -1,0 +1,40 @@
+{% extends 'common/base.html' %}
+{% load staticfiles %}
+
+
+
+{% block body %}
+  <div class="positions">
+   当前位置：<a href="index.html">首页</a> &gt; <a href="#" class="posCur">搜索结果:{{ query }}</a>
+  </div><!--positions/-->
+  <div class="cont">
+  <div class="jilu">
+    <span>{{ query }}</span>
+   </div><!--jilu/-->
+   
+   <div class="contRight">
+    <div class="frProList">
+        {% for good in page %}
+      <dl>
+      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.object.id }}"><img src="{% static good.object.good_image %}" width="132" height="129" /></a></dt>
+      <dd>{{ good.object.good_name }}</dd>
+      <dd class="cheng">￥{{ good.object.good_price }}/{{ good.object.good_unit }} <span>￥{{ good.object.good_price }}</span></dd>
+     </dl>
+        {% endfor %}
+      <div class="clears"></div>
+     </div><!--frProList-->
+{#        <div class="pagenation">#}
+{#            {% if page.has_previous %}#}
+{#            <a href="{% url 'goods:product' a cag_id page.previous_page_number %}">上一页</a>#}
+{#            {% endif %}#}
+{#            {% for index in paginator.page_range %}#}
+{#            <a href="{% url 'goods:product' a cag_id index %}" {% if page_id == index %}class="active"{% endif %}>{{ index }}</a>#}
+{#            {% endfor %}#}
+{#            {% if page.has_next %}#}
+{#            <a href="{% url 'goods:product' a cag_id page.next_page_number %}">下一页</a>#}
+{#            {% endif %}#}
+{#        </div>#}
+   </div><!--contRight/-->
+   <div class="clears"></div>
+  </div><!--cont/-->
+  {% endblock body %}

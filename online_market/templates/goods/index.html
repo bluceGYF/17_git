@@ -1,0 +1,756 @@
+{% extends 'common/base.html' %}
+{% load staticfiles %}
+{% block top_js %}
+<script type="text/javascript">
+{# $(function(){#}
+{#	$("#kinMaxShow").kinMaxShow();#}
+{#});#}
+</script>
+{% endblock top_js %}
+
+
+
+
+
+{% block body %}
+  <div class="rdPro">
+   <div class="rdLeft">
+    <ul class="rdList">
+     <li>推荐产品</li>
+     <li>促销产品</li>
+     <div class="clears"></div>
+    </ul><!--rdList/-->
+    <div class="rdProBox">
+        {% for good in hot_goods %}
+     <dl>
+      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static good.good_image %}" width="132" height="129" /></a></dt>
+      <dd>{{ good.good_name }}</dd>
+      <dd class="cheng">￥{{ good.good_price }}/{{ good.good_unit }}</dd>
+     </dl>
+        {% endfor %}
+     <div class="clears"></div>
+    </div><!--rdPro/-->
+    <div class="rdProBox">
+        {% for good in old_goods %}
+     <dl>
+      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static good.good_image %}" width="132" height="129" /></a></dt>
+      <dd>{{ good.good_name }}</dd>
+      <dd class="cheng">￥{{ good.good_price }}/{{ good.good_unit }}</dd>
+     </dl>
+        {% endfor %}
+     <div class="clears"></div>
+    </div><!--rdPro/-->
+   </div><!--rdLeft/-->
+   <div class="rdRight">
+    <img src="{% static 'images/rdRight.jpg' %}" width="221" height="254" />
+   </div><!--rdRight/-->
+   <div class="clears"></div>
+  </div><!--rdPro/-->
+{% for cag in cags %}
+  <div class="hengfu">
+   <img src="{% static 'images/hengfu1.jpg' %}" width="979" height="97" />
+  </div><!--hengfu/-->
+  <div class="floor" id="floor{{ forloop.counter }}">
+   <h3 class="floorTitle">
+   {{ forloop.counter }}F&nbsp;&nbsp;&nbsp;&nbsp;{{ cag.cag_name }}
+   <a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank" class="more">更多 &gt;</a>
+   </h3>
+   <div class="floorBox">
+    <div class="floorLeft">
+     <ul class="flList">
+         {% for son_cag in cag.goods_son_category_set.all %}
+         <li>{{ son_cag.cag_name }}</li>
+         {% endfor %}
+      <li><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank">更多&gt;&gt;</a></li>
+      <div class="clears"></div>
+     </ul><!--flList/-->
+     <div class="flImg"><img src="{% static 'images/flListimg.jpg' %}" width="198" height="290" /></div>
+    </div><!--floorLeft/-->
+
+    <div class="floorRight">
+{% for son_cag in cag.goods_son_category_set.all %}
+
+     <div class="frProList">
+    {% for good in son_cag.goodsinfo_set.all %}
+      <dl>
+      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static good.good_image %}" width="132" height="129" /></a></dt>
+      <dd>{{ good.good_name }}</dd>
+      <dd class="cheng">￥{{ good.good_price }}/{{ good.good_unit }}</dd>
+     </dl>
+    {% endfor %}
+      <div class="clears"></div>
+     </div><!--frProList-->
+{% endfor %}
+
+
+
+
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+{##}
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+{##}
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+{##}
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+
+    </div><!--floorRight/-->
+
+    <div class="clears"></div>
+   </div><!--floorBox/-->
+  </div><!--floor/-->
+    {% endfor %}
+
+
+
+
+{#    <div class="hengfu">#}
+{#   <img src="{% static 'images/hengfu2.jpg' %}" width="978" height="97" />#}
+{#  </div><!--hengfu/-->#}
+{#  <div class="floor" id="floor3">#}
+{#   <h3 class="floorTitle">#}
+{#   2F&nbsp;&nbsp;&nbsp;&nbsp;餐具系列#}
+{#   <a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank" class="more">更多 &gt;</a>#}
+{#   </h3>#}
+{#   <div class="floorBox">#}
+{#    <div class="floorLeft">#}
+{#     <ul class="flList">#}
+{#      <li>蛋糕</li>#}
+{#      <li>沙拉</li>#}
+{#      <li>西餐</li>#}
+{#      <li>中餐</li>#}
+{#      <li>外带打包</li>#}
+{#      <li><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank">更多&gt;&gt;</a></li>#}
+{#      <div class="clears"></div>#}
+{#     </ul><!--flList/-->#}
+{#     <div class="flImg"><img src="{% static 'images/flListimg.jpg' %}" width="198" height="290" /></div>#}
+{#    </div><!--floorLeft/-->#}
+{#    <div class="floorRight">#}
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro1.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro1.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro1.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro1.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro1.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro1.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+{#    </div><!--floorRight/-->#}
+{#    <div class="clears"></div>#}
+{#   </div><!--floorBox/-->#}
+{#  </div><!--floor/-->#}
+{#  <div class="hengfu">#}
+{#   <img src="{% static 'images/hengfu1.jpg' %}" width="978" height="97" />#}
+{#  </div><!--hengfu/-->#}
+{#  <div class="floor" id="floor2">#}
+{#   <h3 class="floorTitle">#}
+{#   3F&nbsp;&nbsp;&nbsp;&nbsp;纸浆模塑系列#}
+{#   <a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank" class="more">更多 &gt;</a>#}
+{#   </h3>#}
+{#   <div class="floorBox">#}
+{#    <div class="floorLeft">#}
+{#     <ul class="flList">#}
+{#      <li>纸碟</li>#}
+{#      <li>纸袋</li>#}
+{#      <li>纸碗</li>#}
+{#      <li>食品袋</li>#}
+{#      <li>外带打包</li>#}
+{#      <li><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank">更多&gt;&gt;</a></li>#}
+{#      <div class="clears"></div>#}
+{#     </ul><!--flList/-->#}
+{#     <div class="flImg"><img src="{% static 'images/flListimg.jpg' %}" width="198" height="290" /></div>#}
+{#    </div><!--floorLeft/-->#}
+{#    <div class="floorRight">#}
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro1.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro1.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro1.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro1.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro1.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro3.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro1.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+{#     <div class="frProList">#}
+{#      <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro1.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro2.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#      <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro4.jpg' %}" width="132" height="129" /></a></dt>#}
+{#      <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#      <dd class="cheng">￥19.80/袋</dd>#}
+{#     </dl>#}
+{#     <dl>#}
+{#       <dt><a href="{% url 'goods:proinfo' %}?id={{ good.id}}" target="_blank"><img src="{% static 'images/rdPro5.jpg' %}" width="132" height="129" /></a></dt>#}
+{#       <dd>妙洁 一次性纸杯 8盎司228ml 100只/袋 20袋/箱</dd>#}
+{#       <dd class="cheng">￥19.80/袋</dd>#}
+{#      </dl>#}
+{#      <div class="clears"></div>#}
+{#     </div><!--frProList-->#}
+{#    </div><!--floorRight/-->#}
+{#    <div class="clears"></div>#}
+{#   </div><!--floorBox/-->#}
+{#  </div><!--floor/-->#}
+  {% endblock body %}

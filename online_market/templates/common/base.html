@@ -1,0 +1,147 @@
+{% load staticfiles %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>17商城</title>
+<link type="text/css" href="{% static 'css/css.css' %}" rel="stylesheet" />
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/js.js' %}"></script>
+<script src="{% static 'js/wb.js' %}" type="text/javascript" charset="utf-8"></script>
+{#<script type="text/javascript">#}
+{# $(function(){#}
+{#	 $(".vipNav dd:eq(2)").show();#}
+{#	 })#}
+{#</script>#}
+
+
+{# 顶部js代码 #}
+{% block top_js %}
+
+{% endblock top_js %}
+</head>
+
+<body>
+ <div class="mianCont">
+  <div class="top">
+      {% if not request.session.username %}
+   <span>您好！欢迎来到17商城 请&nbsp;<a href="{% url 'user:login' %}">[登录]</a>&nbsp;<a href="{% url 'user:reg' %}">[注册]</a></span>
+      {% else %}
+   <span>您好！欢迎来到17商城 请&nbsp;<a href="{% url 'user:vip' %}">{{ request.session.username }}</a>&nbsp;<a href="{% url 'user:logout_handle' %}">[注销]</a></span>
+      {% endif %}
+   <span class="topRight">
+    <a href="{% url 'user:vip' %}">我的17</a>&nbsp;|
+    <a href="{% url 'user:uorder' %}">我的订单</a>&nbsp;|
+    <a href="{% url 'user:vip' %}">会员中心</a>&nbsp;|
+    <a href="../contact.html">联系我们</a>
+   </span>
+  </div><!--top/-->
+  <div class="lsg">
+   <h1 class="logo"><a href="{% url 'goods:index' %}"><img src="{% static 'images/logo.png' %}" width="217" height="90" /></a></h1>
+   <form action="/search/" method="get" class="subBox">
+    <div class="subBoxDiv">
+     <input type="text" class="subLeft" name="q"/>
+     <input type="submit"  width="63" height="34" class="sub" value="搜索" />
+     <div class="hotWord">
+      热门搜索：
+      <a href="../goods/proinfo.html">冷饮杯</a>&nbsp;
+      <a href="../goods/proinfo.html">热饮杯</a> &nbsp;
+      <a href="../goods/proinfo.html">纸杯</a>&nbsp;
+      <a href="../goods/proinfo.html">纸巾</a>  &nbsp;
+      <a href="../goods/proinfo.html">纸巾</a> &nbsp;
+      <a href="../goods/proinfo.html">纸杯</a>&nbsp;
+     </div><!--hotWord/-->
+    </div><!--subBoxDiv/-->
+   </form><!--subBox/-->
+   <div class="gouwuche">
+    <div class="gouCar">
+     <img src="{% static 'images/gouimg.png' %}" width="19" height="20" style="position:relative;top:6px;" />&nbsp;|&nbsp;
+     <strong class="red" id="cheche">{{ request.total }}</strong>&nbsp;件&nbsp;|
+     <strong class="red" id="money"> {{ request.money }}元</strong>
+     <a href="{% url 'cart:cart' %}">去结算</a> <img src="{% static 'images/youjian.jpg' %}" width="5" height="8" />
+    </div><!--gouCar/-->
+    <div class="myChunlv">
+     <a href="{% url 'user:vip' %}"><img src="{% static 'images/mychunlv.jpg' %}" width="112" height="34" /></a>
+    </div><!--myChunlv/-->
+   </div><!--gouwuche/-->
+  </div><!--lsg/-->
+  <div class="pnt">
+   <div class="pntLeft">
+    <h2 class="Title">所有商品分类
+     <ul class="InPorNav">
+         {% for cag in request.cags %}
+     <li><a href="{% url 'goods:product' 1 cag.id 1 %}">{{ cag.cag_name }}</a>
+      <div class="chilInPorNav">
+          {% for son_cag in cag.goods_son_category_set.all %}
+       <a href="{% url 'goods:product' 2 son_cag.id 1 %}">{{ son_cag.cag_name }}</a>
+            {% endfor %}
+      </div><!--chilLeftNav/-->
+     </li>
+         {% endfor %}
+    </ul><!--InPorNav/-->
+    </h2>
+   </div><!--pntLeft/-->
+   <div class="pntRight">
+    <ul class="nav">
+     <li><a href="{% url 'goods:index' %}">商城首页</a></li>
+     <li><a href="{% url 'goods:product' 1 1 1 %}">促销中心</a></li>
+     <li><a href="{% url 'user:vip' %}">会员中心</a></li>
+     <li><a href="{% url 'help:help' %}">帮助中心</a></li>
+     <div class="clears"></div>
+     <div class="phone">TEL：021-12345678</div>
+    </ul><!--nav/-->
+   </div><!--pntRight/-->
+   <div class="clears"></div>
+  </div><!--pnt/-->
+ {# ------------------------------------主体代码------------------------------ #}
+{% block body %}
+{% endblock body %}
+ {# ------------------------------------主体代码------------------------------ #}
+<div class="inHelp">
+   <div class="inHLeft">
+    <h4>帮助中心</h4>
+    <ul class="inHeList">
+     <li><a href="../help/help.html">购物指南</a></li>
+     <li><a href="../help/help.html">支付方式</a></li>
+     <li><a href="../help/help.html">售后服务</a></li>
+     <li><a href="../about.html">企业简介</a></li>
+     <div class="clears"></div>
+    </ul><!--inHeList/-->
+   </div><!--inHLeft/-->
+   <div class="inHLeft">
+    <h4>会员服务</h4>
+    <ul class="inHeList">
+     <li><a href="{% url 'user:reg' %}">会员注册</a></li>
+     <li><a href="{% url 'user:login' %}">会员登录</a></li>
+     <li><a href="{% url 'cart:cart' %}">购物车</a></li>
+     <li><a href="{% url 'cart:cart' %}">我的订单</a></li>
+     <div class="clears"></div>
+    </ul><!--inHeList/-->
+   </div><!--inHLeft/-->
+   <div class="inHRight">
+    <h4>全国统一免费服务热线</h4>
+    <div class="telBox">400-0000-0000</div>
+    <div class="weibo">
+    <wb:follow-button uid="2991975565" type="red_1" width="67" height="24" ></wb:follow-button>
+    </div>
+   </div><!--inHRight/-->
+   <div class="clears"></div>
+  </div><!--inHelp/-->
+  <div class="footer">
+   <p>
+   <a href="#">进入17官网</a>&nbsp;|&nbsp;
+   <a href="{% url 'goods:index' %}">商城首页</a>&nbsp;|&nbsp;
+   <a href="../goods/product.html">促销中心</a>&nbsp;|&nbsp;
+   <a href="order.html">我的订单</a>&nbsp;|&nbsp;
+   <a href="new.html">新闻动态</a>&nbsp;|&nbsp;
+   <a href="login.html">会员中心</a>&nbsp;|&nbsp;
+   <a href="help.htmll">帮助中心</a>
+   </p>
+   <p>
+    版权所有：上海17实业有限公司 版权所有  Copyright 2010-2015   沪ICP备00000000号   <a href="http://www.mycodes.net/" target="_blank">源码之家</a>
+   </p>
+  </div><!--footer/-->
+ </div><!--mianCont/-->
+ <a href="#" class="backTop">&nbsp;</a>
+</body>
+</html>

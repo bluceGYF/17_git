@@ -1,0 +1,64 @@
+{% extends 'common/base.html' %}
+{% load staticfiles %}
+{% block top_js %}
+<script type="text/javascript">
+ $(function(){
+	 $(".vipNav dd:eq(1)").show();
+	 })
+</script>
+{% endblock top_js %}
+
+
+{% block body %}
+  <div class="positions">
+   当前位置：<a href="../goods/index.html">首页</a> &gt; <a href="vip.html">会员中心</a>
+    &gt; <a href="#" class="posCur">我的订单</a>
+  </div><!--positions/-->
+  <div class="cont">
+   <div class="contLeft" id="contLeft">
+    <h3 class="leftTitle">会员中心</h3>
+    <dl class="helpNav vipNav">
+     <dt>我的主页</dt>
+      <dd>
+       <a href="vip.html">个人中心</a>
+       <a href="uorder.html">我的订单</a>
+      </dd>
+     <dt>账户设置</dt>
+      <dd>
+       <a href="vipMy.html">个人信息</a>
+       <a href="repwd.html" class="vipCur">密码修改</a>
+       <a href="vip_adress.html">收货地址</a>
+      </dd>
+      <dt>客户服务</dt>
+       <dd>
+        <a href="use_detail.html">网站使用条款</a>
+        <a href="state.html">网站免责声明</a>
+        <a href="message.html">在线留言</a>
+       </dd>
+    </dl><!--helpNav/-->
+   </div><!--contLeft/-->
+   <div class="contRight">
+   <h2 class="oredrName">
+    修改密码
+    </h2>
+    <div class="address" style="display:block">
+    <div class="addList">
+     <label>原密码:</label>
+     <input type="password" />
+    </div><!--addList-->
+    <div class="addList">
+     <label>新密码:</label>
+     <input type="password" class="vipPwd1" />
+    </div><!--addList-->
+    <div class="addList">
+     <label>确认密码:</label>
+     <input type="password" class="vipPwd2" />
+    </div><!--addList-->
+    <div class="addList2">
+     <input type="image" src="{% static 'images/baocun.png' %}" width="79" height="30" class="vipSub" />
+    </div><!--addList2/-->
+   </div><!--address/-->
+   </div><!--contRight/-->
+   <div class="clears"></div>
+  </div><!--cont/-->
+  {% endblock body %}

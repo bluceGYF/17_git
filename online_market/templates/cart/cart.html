@@ -1,0 +1,212 @@
+{% extends 'common/base.html' %}
+{% load staticfiles %}
+
+{% block top_js %}
+    <script>
+        $(function(){
+            {#更新单品总价、所有商品总价#}
+            function update_signal_total_money(obj){
+                    // 获得商品单价和商品数量
+                    var price = parseFloat(obj.parents('.cart').find('.price').html());
+{#                    alert(price);#}
+                    var amount = parseInt(obj.parents('.cart').find('.shuliang').val());
+{#                    alert(amount);#}
+                    var signal_money = price*amount;
+                    // 更新单品总价
+                    obj.parents('.cart').find('.signal_money').html(signal_money.toFixed(2)+'元');
+                    var total_money = 0;
+                    var total_amount = 0;
+                    // 遍历每一栏cart
+                    $('.cart').each(function(){
+                        // 判断当前一栏有没有被选中
+                        if(!$(this).find('input:checkbox').prop('checked')){
+                            // return true 跳过当前循环相当于continue return false 相当于break
+                            return true;
+                        }
+                        var price = parseFloat($(this).find('.price').html());
+                        var amount = parseInt($(this).find('.shuliang').val());
+                        signal_money = price*amount;
+                        total_money += signal_money;
+                        total_amount += amount
+                    });
+
+                    // 更新总价
+                    $('.zongji .total_money').html(total_money.toFixed(2)+'元');
+                    $('#cheche').html(total_amount);
+                    $('#money').html(total_money.toFixed(2)+'元');
+            }
+
+
+            {#加减购物车商品数量#}
+            $('.cart').each(function(){
+                $(this).find('.jian').click(function(){
+                    num = $(this).parents('.cart').find('.shuliang').val();
+                    num = parseInt(num);
+                    num -= 1;
+                    if(num <= 0){
+                        num = 1;
+                    }
+                    $(this).parents('.cart').find('.shuliang').val(num);
+                    // 更新后台数据
+                    update_goods_num($(this));
+                });
+                $(this).find('.jia').click(function(){
+                    num = $(this).parents('.cart').find('.shuliang').val();
+                    num = parseInt(num);
+                    num += 1;
+                    $(this).parents('.cart').find('.shuliang').val(num);
+                    // 更新后台数据
+                    update_goods_num($(this));
+                });
+                // 先读取当前cart的单品数量
+                $(this).find('.shuliang').change(function(){
+                    num = parseInt($(this).val());
+                    if( isNaN(num) || num<=0 ){
+                        $(this).val(1);
+                        // 更新后台数据
+                        update_goods_num($(this));
+                        alert("非法输入！");
+                    }
+                    else{
+                        // 更新后台数据
+                        update_goods_num($(this));
+                    }
+                });
+            });
+            // 单选
+            $('input:checkbox').change(function(){
+
+                 update_signal_total_money($(this));
+
+            });
+            // 全选
+            $('.col6').find('input:checkbox').click(function(){
+                if($(this).prop('checked')){
+                    $('.cart').find('input:checkbox').prop('checked', true);
+                }else{
+                    $('.cart').find('input:checkbox').prop('checked', false);
+                }
+            });
+            // 删除购物车商品
+            $('.cart .delete').click(function(){
+                if(confirm("您确定要删除吗？")){
+                    goods_id = $(this).parents('.cart').find('input:checkbox').val();
+                    flag = false;
+                    $.ajax({
+                        'url': '{% url 'cart:delete_goods' %}',
+                        'data': {'goods_id': goods_id},
+                        'type': 'get',
+                        'async': false,
+                        'success': function(data){
+                            if(data.ret != 0){
+                                flag = true;
+                            }
+{#                            $('#cheche').html(10);#}
+{#                            $('#money').html(200+'元');#}
+                        }
+                    });
+                    if(flag){
+                        $(this).parents('.cart').remove();
+                        update_signal_total_money($(this));
+                    }
+                }
+
+            });
+            // 更新后台数据
+            function update_goods_num(obj){
+                goods_id = obj.parents('.cart').find('input:checkbox').val();
+                goods_num = obj.parents('.cart').find('.shuliang').val();
+{#                alert(goods_id);#}
+{#                alert(goods_num);#}
+                flag = false;
+                $.ajax({
+                        'url': '{% url 'cart:edit_goods_num' %}',
+                        'data': {'goods_id': goods_id, 'goods_num': goods_num},
+                        'type': 'get',
+                        'async': false,
+                        'success': function(data){
+                            if(data.ret != 0){
+                                flag = true;
+                            }
+                        }
+                    }
+                );
+                if(flag){
+                    update_signal_total_money(obj);
+                }
+            }
+            // 用户结算
+            $('.jiesuan').click(function(){
+                flag = false;
+                $('.cart input:checkbox').each(function(){
+                    if($(this).prop('checked')){
+                        flag = true;
+                        return false;
+                    }
+                });
+                if(flag){
+                    $('#cart_accounts').submit();
+                }else{
+                        alert("您还没有选中任何商品！")
+                }
+            });
+        });
+    </script>
+{% endblock top_js %}
+
+
+{% block body %}
+  <div class="positions">
+   当前位置：<a href="../goods/index.html">首页</a> &gt; <a href="#" class="posCur">购物车</a>
+  </div><!--positions/-->
+  <div class="cont">
+   <div class="carImg"><img src="{% static 'images/car1.jpg' %}" width="951" height="27" /></div>
+   <table class="orderList">
+    <tr>
+     <th width="20"></th>
+     <th width="430">商品</th>
+     <th width="135">单价</th>
+     <th width="135">数量</th>
+     <th width="135">总金额</th>
+     <th>操作</th>
+    </tr>
+   <form action="{% url 'cart:cart_accounts' %}" method="post" id="cart_accounts">
+        {% csrf_token %}
+       {% for cart in carts %}
+    <tr class="cart">
+     <td><input type="checkbox" checked value="{{ cart.cart_goods.id }}" name="goods_id"/></td>
+     <td>
+      <dl>
+       <dt><a href="{% url 'goods:proinfo' %}?id={{ cart.cart_goods.id }}"><img src="{% static cart.cart_goods.good_image %}" width="85" height="85" /></a></dt>
+       <dd>{{ cart.cart_goods.good_name }}<br /><span class="red">{% if cart.cart_goods.good_status == True %}有货{% else %}空{% endif %}：</span>从上海出发</dd>
+       <div class="clears"></div>
+      </dl>
+     </td>
+     <td><strong class="red price">{{ cart.cart_goods.good_price }}元</strong></td>
+     <td>
+     <div class="jia_jian">
+      <img src="{% static 'images/jian.jpg' %}" width="21" height="25" class="jian" />
+      <input type="text" class="shuliang" value="{{ cart.cart_amount }}" />
+      <img src="{% static 'images/jia.jpg' %}" width="21" height="25" class="jia" />
+     </div>
+     </td>
+     <td><strong class="red signal_money">{{ cart.signal_money }}元</strong></td>
+     <td><a href="#" class="green delete">删除</a></td>
+    </tr>
+    {% endfor %}
+   </form>
+    <tr>
+     <td colspan="6" class="col6"><div style="position:relative;left:-454px"><input type="checkbox" class="shanchu" > 全选</div></td>
+    </tr>
+   </table><!--orderList/-->
+   <div class="zongji">
+    总计(不含运费)：<strong class="red total_money">{{ carts.money }}元</strong>
+   </div><!--zongji/-->
+   <div class="jiesuan">
+    <a href="../goods/product.html" class="jie_1">继续购物&gt;&gt;</a>
+    <a href="javascript:;" class="jie_2">立即结算&gt;&gt;</a>
+    <div class="clears"></div>
+   </div><!--jiesuan/-->
+   <div class="clears"></div>
+  </div><!--cont/-->
+  {% endblock body %}

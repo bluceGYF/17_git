@@ -1,0 +1,176 @@
+{% load staticfiles %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>17商城</title>
+<link type="text/css" href="{% static 'css/css.css' %}" rel="stylesheet" />
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/js.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+    <script>
+        $(function(){
+            // 用户名校验
+            function check_user(){
+                var Regx = /^[A-Za-z0-9]{8,16}$/;
+                var u_val = $('#user').val()
+                if (Regx.test(u_val)){
+                    return true
+                }else{
+                    return false
+                }
+            }
+
+            // 用户名失去焦点执行判断
+            $('#user').blur(function(){
+                if(check_user()){
+                    $.get('/user/check_username/', {'username': $('#user').val()}, function(data){
+
+                        if(data.ret==1){
+                            $('#user_c').html('用户名已存在！');
+                            $('#user_c').css('color', 'red');
+                            $('#user_c').show();
+{#                            $(this).next().next().hide();#}
+                            $('.reminder').hide();
+                        }else{
+                            $('#user_c').html('用户名可以使用');
+                            $('#user_c').css('color', 'gray');
+                            $('#user_c').show();
+{#                            $(this).next().next().hide();#}
+                            $('.reminder').hide();
+                        }
+
+                    });
+                }else{
+                    $(this).next().next().html('用户名为8-16数字和字母');
+                    $(this).next().next().css('color', 'red');
+                    // 隐藏服务器端提示信息
+                    $(this).next().hide();
+                    $('.reminder_info').hide();
+                    $(this).next().next().show();
+                }
+
+
+
+            });
+            // 密码校验
+            function check_pwd(){
+                var Regx = /^[A-Za-z0-9]{6,12}$/;
+                var p_val = $('#pwd1').val()
+                if (Regx.test(p_val)){
+                    return true
+                }else{
+                    return false
+                }
+            }
+            // 密码失去焦点执行判断
+            $('#pwd1').blur(function(){
+                if(check_pwd()){
+                    $(this).next().html('密码可以使用');
+                    $(this).next().css('color', 'gray')
+                }else{
+                    $(this).next().html('密码为6-12数字和字母');
+                    $(this).next().css('color', 'red')
+                }
+                // 隐藏服务器端提示信息
+                $('.reminder_info').hide()
+                $(this).next().show();
+            });
+            // 比较两次密码输入是否一致
+            $('#pwd2').blur(function(){
+                if($('#pwd1').val()==$('#pwd2').val()){
+                    $(this).next().html('密码一致，可以使用。');
+                    $(this).next().css('color', 'gray')
+
+                }else{
+                    $(this).next().html('两次密码不一致');
+                    $(this).next().css('color', 'red')
+                }
+                // 隐藏服务器端提示信息
+                $('.reminder_info').hide()
+                $(this).next().show();
+            });
+            // 判断是否协议勾选
+            $('input:checkbox').click(function(){
+                if($(this).prop('checked')){
+                    $(this).next().next().hide();
+                }else{
+                    $(this).next().next().html('需要同意协议！');
+                    $(this).next().next().css('color', 'red');
+                    $(this).next().next().show();
+                }
+                // 隐藏服务器端提示信息
+                $('.reminder_info').hide();
+            });
+            // 判断验证码
+            $('.yanzheng').blur(function(){
+                // 隐藏服务器端提示信息
+                $('.reminder_info').hide();
+                $.get('/user/check_yanzheng', {'yanzheng':$('.yanzheng').val()}, function(data){
+                    if (data.ret == '0'){
+                        $('.yanzheng').next().next().html('验证码不正确!');
+                        $('.yanzheng').next().next().css('color', 'red');
+
+                        $('.yanzheng').next().next().show();
+                    }else{
+                        $('.yanzheng').next().next().hide();
+                    }
+                })
+            });
+
+
+        });
+    </script>
+</head>
+
+<body style=" background:#FFF;">
+ <div class="loginLogo">
+  <div class="logoMid">
+   <h1 class="logo" style="height:71px;padding-top:10px;"><a href="../goods/index.html"><img src="{% static 'images/loginLogo.jpg' %}" width="241" height="71" /></a></h1>
+   <div class="loginReg">
+    还没有会员账号?&nbsp;<a href="login.html">登录</a>
+   </div><!--loginReg/-->
+  </div><!--logoMid/-->
+ </div><!--loginLogo/-->
+ <div class="loginBox">
+  <img src="{% static 'images/chengnuo.jpg' %}" width="295" height="393" class="chengnuo" />
+{# {{ args }}#}
+ {% if mess.flag == '0' %}<script>alert("注册失败！")</script>{% endif %}
+{# <script type="javascript"></script>#}
+  <form action="{% url 'user:register_handle' %}" method="post" class="reg">
+      {% csrf_token %}
+   <div class="regList">
+    <label><span class="red">*</span> 账户名</label>
+    <input type="text" id="user" name="user_name" value="{{ mess.user_name_val }}"/> <span id="user_c" style="color:#999;">请输入用户名</span>
+       <div class="reminder"></div>
+       <div class="reminder_info">{{ mess.user_name }}</div>
+   </div><!--regList/-->
+   <div class="regList">
+    <label><span class="red">*</span> 请设置密码</label>
+    <input type="password" id="pwd1" name="pass1" value="{{ mess.user_pass1_val }}"/>
+       <div class="reminder"></div>
+       <div class="reminder_info">{{ mess.user_pass1 }}</div>
+   </div><!--regList/-->
+   <div class="regList">
+    <label><span class="password">*</span> 请确认密码</label>
+    <input type="password" id="pwd2" name="pass2" value="{{ mess.user_pass2_val }}"/>
+       <div class="reminder"></div>
+       <div class="reminder_info">{{ mess.user_pass2 }}</div>
+   </div><!--regList/-->
+   <div class="regList">
+    <label><span class="red">*</span> 验证码</label>
+    <input type="text" class="yanzheng" name="yanzhen" value="{{ mess.user_yz_val }}"/><img src="/user/verification_code/234/" onclick="javascript:this.src='/user/verification_code/'+ Math.ceil(Math.random()*1000) +'/'" width="103" height="38" />
+   <div class="reminder"></div>
+       <div class="reminder_info">{{ mess.user_yz }}</div>
+   </div><!--regList/-->
+   <div class="xieyi">
+    <input type="checkbox" {% if not mess.user_check %}checked{% endif %} name="user_xieyi" value="1"/> 我已经阅读并同意<a href="#">《17用户注册协议》</a><span class="reminder"></span><span class="reminder_info">{{ mess.user_xieyi }}</span>
+   </div><!--xieyi/-->
+   <div class="reg">
+    <input type="submit" src="{% static 'images/reg.jpg' %}" width="284" height="34" />
+   </div><!--reg/-->
+  </form><!--reg/-->
+  <div class="clears"></div>
+ </div><!--loginBox/-->
+</body>
+</html>
